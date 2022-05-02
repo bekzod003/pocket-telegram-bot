@@ -9,10 +9,10 @@ import (
 
 const (
 	commandStart = "start"
-	startReply   = "Hello, @%s\n" + "I'm a telegram bot that helps you to manage your links in pocket.\n" +
+	startReply   = "Hello, @%s\n!" + "I'm a telegram bot that helps you to manage your links in pocket.\n" +
 		"You can use me to add links to your pocket account, get and edit them.\n" +
 		"You can use /help command to get more information about me.\n" +
-		"To authorize me, please follow this link: %s"
+		"To authorize me, please follow the link below ⬇️"
 )
 
 // Handle message from  telegram bot
@@ -42,7 +42,12 @@ func (b *Bot) handleStartCommand(message *tgbotapi.Message) error {
 		return err
 	}
 
-	msg := tgbotapi.NewMessage(message.Chat.ID, fmt.Sprintf(startReply, message.From.UserName, authLink))
+	msg := tgbotapi.NewMessage(message.Chat.ID, fmt.Sprintf(startReply, message.From.UserName))
+	msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonURL("Authorize", authLink),
+		),
+	)
 	// Sending message and checking if there is error
 	_, err = b.bot.Send(msg)
 	return err

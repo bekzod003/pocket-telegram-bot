@@ -20,7 +20,7 @@ func main() {
 		log.Fatal("Error while creating pocket client: ", err)
 	}
 
-	if err := telegram.NewBot(bot, pocketClient, "http://localhost/").Start(); err != nil {
+	if err := telegram.NewBot(bot, pocketClient, "localhost").Start(); err != nil {
 		log.Fatal("Error while starting bot: ", err)
 	}
 }
