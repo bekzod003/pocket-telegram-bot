@@ -4,16 +4,19 @@ import (
 	"log"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/zhashkevych/go-pocket-sdk"
 )
 
 type Bot struct {
-	bot *tgbotapi.BotAPI
+	bot          *tgbotapi.BotAPI
+	pocketClient *pocket.Client
 }
 
 // Constructor of the structure
-func NewBot(bot *tgbotapi.BotAPI) *Bot {
+func NewBot(bot *tgbotapi.BotAPI, pocketClient *pocket.Client) *Bot {
 	return &Bot{
-		bot: bot,
+		bot:          bot,
+		pocketClient: pocketClient,
 	}
 }
 
