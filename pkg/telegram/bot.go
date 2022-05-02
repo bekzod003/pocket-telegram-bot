@@ -21,8 +21,8 @@ func (b *Bot) Start() error {
 	log.Printf("Authorized on account @%s", b.bot.Self.UserName)
 
 	updates := b.initUpdatesChannel()
-	b.handleUpdates(updates)
 
+	b.handleUpdates(updates)
 	return nil
 }
 
