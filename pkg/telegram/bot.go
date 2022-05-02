@@ -24,7 +24,13 @@ func (b *Bot) Start() error {
 	u.Timeout = 60
 
 	updates := b.bot.GetUpdatesChan(u)
+	b.handleUpdates(updates)
 
+	return nil
+}
+
+// Private method to handle updates from telegram bot
+func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 	for update := range updates {
 		if update.Message != nil { // If we got a message
 			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
@@ -35,6 +41,4 @@ func (b *Bot) Start() error {
 			b.bot.Send(msg)
 		}
 	}
-
-	return nil
 }
