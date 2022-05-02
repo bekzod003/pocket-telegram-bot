@@ -32,18 +32,14 @@ func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 		if update.Message == nil { // If we got no message
 			continue
 		}
+
+		if update.Message.IsCommand() { // If we got command
+			b.handleCommand(update.Message)
+			continue
+		}
+
 		b.handleMessage(update.Message)
 	}
-}
-
-// Handle message from  telegram bot
-func (b *Bot) handleMessage(message *tgbotapi.Message) {
-	log.Printf("[%s] %s", message.From.UserName, message.Text)
-
-	msg := tgbotapi.NewMessage(message.Chat.ID, message.Text)
-	msg.ReplyToMessageID = message.MessageID
-
-	b.bot.Send(msg)
 }
 
 // Initialize updates channel
