@@ -32,16 +32,16 @@ func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 		if update.Message == nil { // If we got no message
 			continue
 		}
-		b.handleUpdate(update)
+		b.handleMessage(update.Message)
 	}
 }
 
-// Handle update from telegram bot
-func (b *Bot) handleUpdate(update tgbotapi.Update) {
-	log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+// Handle message from telegram bot
+func (b *Bot) handleMessage(message *tgbotapi.Message) {
+	log.Printf("[%s] %s", message.From.UserName, message.Text)
 
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-	msg.ReplyToMessageID = update.Message.MessageID
+	msg := tgbotapi.NewMessage(message.Chat.ID, message.Text)
+	msg.ReplyToMessageID = message.MessageID
 
 	b.bot.Send(msg)
 }
