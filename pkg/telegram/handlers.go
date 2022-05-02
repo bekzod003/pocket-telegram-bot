@@ -9,12 +9,24 @@ import (
 const commandStart = "start"
 
 // Handle message from  telegram bot
-func (b *Bot) handleCommand(message *tgbotapi.Message) {
+func (b *Bot) handleCommand(message *tgbotapi.Message) error {
+	msg := tgbotapi.NewMessage(message.Chat.ID, "I don't know this command 😔")
+
 	switch message.Command() {
 	case commandStart:
 		println("Start command")
-		msg := tgbotapi.NewMessage(message.Chat.ID, "Hello, "+message.From.UserName)
-		b.bot.Send(msg)
+		msg.Text = "Hello, @" + message.From.UserName
+		// If user has no username, we should use first name
+		if message.From.UserName == "" {
+			msg.Text = "Hello, " + message.From.FirstName
+		}
+
+		// Sending message and checking if there is error
+		_, err := b.bot.Send(msg)
+		return err
+	default:
+		_, err := b.bot.Send(msg)
+		return err
 	}
 }
 

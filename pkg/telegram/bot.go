@@ -34,7 +34,9 @@ func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 		}
 
 		if update.Message.IsCommand() { // If we got command
-			b.handleCommand(update.Message)
+			if b.handleCommand(update.Message) != nil {
+				log.Printf("Error while handling command: %s", update.Message.Command())
+			}
 			continue
 		}
 
