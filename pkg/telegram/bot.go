@@ -20,10 +20,7 @@ func NewBot(bot *tgbotapi.BotAPI) *Bot {
 func (b *Bot) Start() error {
 	log.Printf("Authorized on account @%s", b.bot.Self.UserName)
 
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
-
-	updates := b.bot.GetUpdatesChan(u)
+	updates := b.initUpdatesChannel()
 	b.handleUpdates(updates)
 
 	return nil
@@ -41,4 +38,13 @@ func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 			b.bot.Send(msg)
 		}
 	}
+}
+
+// Initialize updates channel
+func (b *Bot) initUpdatesChannel() tgbotapi.UpdatesChannel {
+	u := tgbotapi.NewUpdate(0)
+	u.Timeout = 60
+
+	return b.bot.GetUpdatesChan(u)
+
 }
