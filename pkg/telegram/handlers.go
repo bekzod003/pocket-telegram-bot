@@ -17,6 +17,7 @@ const (
 
 // Handle message from  telegram bot
 func (b *Bot) handleCommand(message *tgbotapi.Message) error {
+	// something like endpoints
 	switch message.Command() {
 	case commandStart:
 		return b.handleStartCommand(message)
