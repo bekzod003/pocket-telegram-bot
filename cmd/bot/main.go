@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
+	"github.com/bekzod003/pocket-telegram-bot/pkg/repository/boltdb"
 	"github.com/bekzod003/pocket-telegram-bot/pkg/telegram"
+	"github.com/boltdb/bolt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/zhashkevych/go-pocket-sdk"
 )
@@ -20,7 +23,15 @@ func main() {
 		log.Fatal("Error while creating pocket client: ", err)
 	}
 
-	if err := telegram.NewBot(bot, pocketClient, "localhost").Start(); err != nil {
+	db, err := bolt.Open("bot.db", 0600, nil)
+	if err != nil {
+		log.Fatal("Error while opening bolt db: ", err)
+	}
+	fmt.Printf("db: %v\n", db)
+
+	tokenRepository := boltdb.NewTokenRepository(db)
+
+	if err := telegram.NewBot(bot, pocketClient, "localhost", tokenRepository).Start(); err != nil {
 		log.Fatal("Error while starting bot: ", err)
 	}
 }
